@@ -5,9 +5,10 @@ import "C"
 import (
 	"bytes"
 	"errors"
-	. "github.com/jbowtie/gokogiri/util"
-	"github.com/jbowtie/gokogiri/xml"
 	"unsafe"
+
+	. "github.com/measurableai/gokogiri/util"
+	"github.com/measurableai/gokogiri/xml"
 )
 
 var fragmentWrapperStart = []byte("<div>")

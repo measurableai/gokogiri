@@ -11,14 +11,16 @@ import "C"
 
 import (
 	"errors"
-	"github.com/jbowtie/gokogiri/help"
-	. "github.com/jbowtie/gokogiri/util"
-	"github.com/jbowtie/gokogiri/xml"
+
+	"github.com/measurableai/gokogiri/help"
+	. "github.com/measurableai/gokogiri/util"
+	"github.com/measurableai/gokogiri/xml"
+
 	//"runtime"
 	"unsafe"
 )
 
-//xml parse option
+// xml parse option
 const (
 	HTML_PARSE_RECOVER   xml.ParseOption = 1 << 0  /* Relaxed parsing */
 	HTML_PARSE_NODEFDTD  xml.ParseOption = 1 << 2  /* do not default a doctype if not found */
@@ -33,7 +35,7 @@ const (
 
 const EmptyHtmlDoc = ""
 
-//default parsing option: relax parsing
+// default parsing option: relax parsing
 var DefaultParseOption xml.ParseOption = HTML_PARSE_RECOVER |
 	HTML_PARSE_NONET |
 	HTML_PARSE_NOERROR |
@@ -43,7 +45,7 @@ type HtmlDocument struct {
 	*xml.XmlDocument
 }
 
-//default encoding in byte slice
+// default encoding in byte slice
 var DefaultEncodingBytes = []byte(xml.DefaultEncoding)
 var emptyHtmlDocBytes = []byte(EmptyHtmlDoc)
 
@@ -51,7 +53,7 @@ var ErrSetMetaEncoding = errors.New("Set Meta Encoding failed")
 var ERR_FAILED_TO_PARSE_HTML = errors.New("failed to parse html input")
 var emptyStringBytes = []byte{0}
 
-//create a document
+// create a document
 func NewDocument(p unsafe.Pointer, contentLen int, inEncoding, outEncoding []byte) (doc *HtmlDocument) {
 	doc = &HtmlDocument{}
 	doc.XmlDocument = xml.NewDocument(p, contentLen, inEncoding, outEncoding)
@@ -62,7 +64,7 @@ func NewDocument(p unsafe.Pointer, contentLen int, inEncoding, outEncoding []byt
 	return
 }
 
-//parse a string to document
+// parse a string to document
 func Parse(content, inEncoding, url []byte, options xml.ParseOption, outEncoding []byte) (doc *HtmlDocument, err error) {
 	inEncoding = AppendCStringTerminator(inEncoding)
 	outEncoding = AppendCStringTerminator(outEncoding)

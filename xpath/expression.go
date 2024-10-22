@@ -32,11 +32,14 @@ char *check_xpath_syntax(const char *xpath) {
 }
 */
 import "C"
-import "unsafe"
-import . "github.com/jbowtie/gokogiri/util"
+import (
+	"errors"
+	"unsafe"
+
+	. "github.com/measurableai/gokogiri/util"
+)
 
 //import "runtime"
-import "errors"
 
 type Expression struct {
 	Ptr   *C.xmlXPathCompExpr

@@ -9,11 +9,12 @@ import "C"
 
 import (
 	"errors"
-	"github.com/jbowtie/gokogiri/help"
-	. "github.com/jbowtie/gokogiri/util"
-	"github.com/jbowtie/gokogiri/xpath"
 	"os"
 	"unsafe"
+
+	"github.com/measurableai/gokogiri/help"
+	. "github.com/measurableai/gokogiri/util"
+	"github.com/measurableai/gokogiri/xpath"
 )
 
 type Document interface {
@@ -73,21 +74,21 @@ const (
 	XML_PARSE_BIG_LINES                          // Store big lines numbers in text PSVI field
 )
 
-//DefaultParseOption provides liberal parsing highly tolerant of invalid documents. Errors and warnings
+// DefaultParseOption provides liberal parsing highly tolerant of invalid documents. Errors and warnings
 // are suppressed and the DTD is not processed.
 const DefaultParseOption ParseOption = XML_PARSE_RECOVER |
 	XML_PARSE_NONET |
 	XML_PARSE_NOERROR |
 	XML_PARSE_NOWARNING
 
-//StrictParseOption provides standard-compliant parsing. The DTD is processed, entity
+// StrictParseOption provides standard-compliant parsing. The DTD is processed, entity
 // substitions are made, and errors and warnings are reported back.
 const StrictParseOption ParseOption = XML_PARSE_NOENT |
 	XML_PARSE_DTDLOAD |
 	XML_PARSE_DTDATTR |
 	XML_PARSE_NOCDATA
 
-//DefaultEncoding is UTF-8, which is also the default for both libxml2 and Go strings.
+// DefaultEncoding is UTF-8, which is also the default for both libxml2 and Go strings.
 const DefaultEncoding = "utf-8"
 
 var ERR_FAILED_TO_PARSE_XML = errors.New("failed to parse xml input")
@@ -109,13 +110,13 @@ type XmlDocument struct {
 	fragments []*DocumentFragment //save the pointers to free them when the doc is freed
 }
 
-//DefaultEncodingBytes allows us to conveniently pass the DefaultEncoding to various functions that
+// DefaultEncodingBytes allows us to conveniently pass the DefaultEncoding to various functions that
 // expect the encoding as a byte array.
 var DefaultEncodingBytes = []byte(DefaultEncoding)
 
 const initialFragments = 2
 
-//NewDocument wraps the pointer to the C struct.
+// NewDocument wraps the pointer to the C struct.
 //
 // TODO: this should probably not be exported.
 func NewDocument(p unsafe.Pointer, contentLen int, inEncoding, outEncoding []byte) (doc *XmlDocument) {
@@ -319,7 +320,7 @@ func (document *XmlDocument) CreateElementNode(tag string) (element *ElementNode
 	return
 }
 
-//CreateTextNode creates a text node. It can be added as a child of an element.
+// CreateTextNode creates a text node. It can be added as a child of an element.
 //
 // The data argument is XML-escaped and used as the content of the node.
 func (document *XmlDocument) CreateTextNode(data string) (text *TextNode) {
@@ -333,7 +334,7 @@ func (document *XmlDocument) CreateTextNode(data string) (text *TextNode) {
 	return
 }
 
-//CreateCDataNode creates a CDATA node. CDATA nodes can
+// CreateCDataNode creates a CDATA node. CDATA nodes can
 // only be children of an element.
 //
 // The data argument will become the content of the newly created node.
@@ -348,7 +349,7 @@ func (document *XmlDocument) CreateCDataNode(data string) (cdata *CDataNode) {
 	return
 }
 
-//CreateCommentNode creates a comment node. Comment nodes can
+// CreateCommentNode creates a comment node. Comment nodes can
 // be children of an element or of the document itself.
 //
 // The data argument will become the content of the comment.
@@ -362,7 +363,7 @@ func (document *XmlDocument) CreateCommentNode(data string) (comment *CommentNod
 	return
 }
 
-//CreatePINode creates a processing instruction node with the specified name and data.
+// CreatePINode creates a processing instruction node with the specified name and data.
 // Processing instruction nodes can be children of an element or of the document itself.
 //
 // While it's common to use an attribute-like syntax for processing instructions, the data
@@ -446,7 +447,9 @@ func (document *XmlDocument) Free() {
 	}
 }
 
-/* Uri returns the URI of the document - typically this is the filename if ReadFile was used to parse
+/*
+	Uri returns the URI of the document - typically this is the filename if ReadFile was used to parse
+
 the document.
 */
 func (document *XmlDocument) Uri() (val string) {

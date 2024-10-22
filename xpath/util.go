@@ -13,11 +13,12 @@ int getXPathObjectType(xmlXPathObject* o);
 import "C"
 
 import (
+	"reflect"
 	"sync"
 	"unsafe"
+
+	. "github.com/measurableai/gokogiri/util"
 )
-import "reflect"
-import . "github.com/jbowtie/gokogiri/util"
 
 var (
 	contextMap   = make(map[unsafe.Pointer]VariableScope)
