@@ -362,8 +362,15 @@ func (xmlNode *XmlNode) PreviousSibling() Node {
 }
 
 // CountChildren returns the number of child nodes.
+// Uses direct struct traversal instead of C.xmlLsCountNode which was deprecated
+// and removed in newer libxml2 versions (macOS Homebrew libxml2 2.12+).
+// Functionally equivalent: xmlLsCountNode iterates node->children for element nodes.
 func (xmlNode *XmlNode) CountChildren() int {
-	return int(C.xmlLsCountNode(xmlNode.Ptr))
+	count := 0
+	for child := xmlNode.Ptr.children; child != nil; child = child.next {
+		count++
+	}
+	return count
 }
 
 func (xmlNode *XmlNode) FirstChild() Node {
